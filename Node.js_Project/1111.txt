@@ -1,0 +1,72 @@
+var {google} = require('googleapis');
+// const { resolve } = require('path');
+// const { rejects } = require('assert');
+const { url } = require('inspector');
+var http = require('http');
+var open = require('open');
+var destroyer = require('destroyer');
+
+const oauth2Client = new google.auth.OAuth2(
+    "클라이언트 아이디",
+    "클라이언트 시크릿",
+    "리다이렉트 URI"
+);
+
+const scopes = [
+    'https://www.googleapis.com/auth/youtube',
+    'https://www.googleapis.com/auth/youtube.force-ssl',
+    'https://www.googleapis.com/auth/youtube.readonly',
+    'https://www.googleapis.com/auth/youtubepartner'
+];
+
+// async function authenticate() {
+//     return new Promise((resolve, reject) => {
+
+//         const authorizeUrl = oauth2Client.generateAuthUrl({
+//             access_type: 'offline',
+//             scope: scopes,
+//         });
+
+//         const server = http.createServer(async (req, res) => {
+//             try {
+//                 if (req.url.indexOf('/api/oauth2callback') > -1) {
+//                     const qs = new url.URL(req.url, 'http://localhost:8000').searchParams;
+//                     server.destroy();
+
+//                     resolve(qs.get('code'));
+
+//                     const {
+//                         tokens
+//                     } = await oauth2Client.getToken(qs.get('code'));
+
+//                     oauth2Client.credentials = tokens;
+
+//                     resolve(oauth2Client);
+//                 }
+//             } catch (e) {
+//                 reject(e);
+//             }
+//         }).listen(8000, () => {
+//             open(authorizeUrl, {
+//                 wait: false
+//             }).then(cp => cp.unref());
+//         });      
+        
+//         destroyer(server);
+//     });
+// }
+
+// async function runSample(code) {
+//     console.log(code);
+// }
+
+// authenticate()
+//     .then(code => runSample(code))
+//     .catch(console.error);
+
+const url = oauth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: scopes
+});
+
+console.log(url);
